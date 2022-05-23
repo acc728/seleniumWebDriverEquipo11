@@ -42,7 +42,7 @@ public class TestsEliminacionTest {
 	    	// Descargar geckodriver de https://github.com/mozilla/geckodriver/releases
 	    	// Descomprimir el archivo geckodriver.exe en la carpeta drivers
 	    	
-	    	System.setProperty("webdriver.gecko.driver",  "drivers/geckodriver.exe"); //HAY QUE COMENTAR ESTO EN JENKINS
+//	    	System.setProperty("webdriver.gecko.driver",  "drivers/geckodriver.exe"); //HAY QUE COMENTAR ESTO EN JENKINS
 	    	driver = new FirefoxDriver();
 	    	break;
 	    case 1: // chrome
@@ -50,7 +50,7 @@ public class TestsEliminacionTest {
 	    	// Descargar Chromedriver de https://chromedriver.chromium.org/downloads
 	    	// Descomprimir el archivo chromedriver.exe en la carpeta drivers
 
-	    	System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe"); //HAY QUE COMENTAR ESTO EN JENKINS
+//	    	System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe"); //HAY QUE COMENTAR ESTO EN JENKINS
 	    	driver = new ChromeDriver();
 	    	break;
 
