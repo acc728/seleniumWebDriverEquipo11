@@ -291,4 +291,87 @@ public class TestsEliminacionTest {
       }
     driver.findElement(By.cssSelector(".btn")).click();
   }
+  
+  @Test
+  public void creacionDeTareaCasoIncorrecto() {
+    // Test name: CreacionDeTarea(CasoIncorrecto)
+    // Step # | name | target | value
+    // 1 | open | http://coresqlfernandezcamacho.azurewebsites.net/ | 
+	  try {
+	        Thread.sleep(1000);
+	      } catch (InterruptedException e) {
+	        e.printStackTrace();
+	      }
+    driver.get("http://coresqlfernandezcamacho.azurewebsites.net/");
+    // 2 | click | linkText=Create New | 
+    try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    driver.findElement(By.linkText("Create New")).click();
+    // 4 | type | id=Description | Tarea incorrecta
+    try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    driver.findElement(By.id("Description")).sendKeys("Tarea incorrecta");
+    // 5 | click | css=.btn | 
+    try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    driver.findElement(By.cssSelector(".btn")).click();
+    // 6 | mouseUp | id=CreatedDate-error | 
+    try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    {
+      WebElement element = driver.findElement(By.id("CreatedDate-error"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 7 | assertText | id=CreatedDate-error | The Created Date field is required.
+    assertThat(driver.findElement(By.id("CreatedDate-error")).getText(), is("The Created Date field is required."));
+  }
+  
+  @Test
+  public void listadoDeTareasCasoCorrecto() {
+    // Test name: ListadoDeTareas(CasoCorrecto)
+    // Step # | name | target | value
+    // 1 | open | http://coresqlfernandezcamacho.azurewebsites.net/ | 
+    driver.get("http://coresqlfernandezcamacho.azurewebsites.net/");
+    // 2 | assertElementPresent | //td[normalize-space(text()) = 'Tarea1'] | 
+    try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    {
+      List<WebElement> elements = driver.findElements(By.xpath("//td[normalize-space(text()) = \'Tarea1\']"));
+      assert(elements.size() > 0);
+    }
+  }
+  
+  @Test
+  public void listadoDeTareasCasoIncorrecto() {
+    // Test name: ListadoDeTareas(CasoIncorrecto)
+    // Step # | name | target | value
+    // 1 | open | http://coresqlfernandezcamacho.azurewebsites.net/ | 
+    driver.get("http://coresqlfernandezcamacho.azurewebsites.net/");
+    // 2 | assertElementNotPresent | //td[normalize-space(text()) = 'TareaInexistente'] | 
+    try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    {
+      List<WebElement> elements = driver.findElements(By.xpath("//td[normalize-space(text()) = \'TareaInexistente\']"));
+      assert(elements.size() == 0);
+    }
+  }
 }
