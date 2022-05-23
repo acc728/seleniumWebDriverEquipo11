@@ -32,13 +32,35 @@ import org.junit.runners.MethodSorters;
 public class TestsEliminacionTest {
   private WebDriver driver;
   private Map<String, Object> vars;
+  private int browser= 0;
   JavascriptExecutor js;
   @Before
   public void setUp() {
-	System.setProperty("webdriver.gecko.driver", "drivers/geckodriver.exe");
-	System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+	  switch (browser) {
+	    case 0:  // firefox
+	    	// Firefox
+	    	// Descargar geckodriver de https://github.com/mozilla/geckodriver/releases
+	    	// Descomprimir el archivo geckodriver.exe en la carpeta drivers
+	    	
+	    	System.setProperty("webdriver.gecko.driver",  "drivers/geckodriver.exe"); //HAY QUE COMENTAR ESTO EN JENKINS
+	    	driver = new FirefoxDriver();
+	    	break;
+	    case 1: // chrome
+	    	// Chrome
+	    	// Descargar Chromedriver de https://chromedriver.chromium.org/downloads
+	    	// Descomprimir el archivo chromedriver.exe en la carpeta drivers
+
+	    	System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe"); //HAY QUE COMENTAR ESTO EN JENKINS
+	    	driver = new ChromeDriver();
+	    	break;
+
+	    default:
+	    	fail("Please select a browser");
+	    	break;
+	    }
+
 	//Chrome
-    driver = new ChromeDriver();
+//    driver = new ChromeDriver();
 //    ChromeOptions chromeOptions = new ChromeOptions();
 //    chromeOptions.setHeadless(true);
 //    driver = new ChromeDriver(chromeOptions);
@@ -50,6 +72,7 @@ public class TestsEliminacionTest {
 //    driver = new FirefoxDriver(firefoxOptions);
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
+    
   }
   @After
   public void tearDown() {
@@ -91,7 +114,11 @@ public class TestsEliminacionTest {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-    driver.findElement(By.id("CreatedDate")).sendKeys("26/05/2022");
+    if(browser == 0)
+    	driver.findElement(By.id("CreatedDate")).sendKeys("2022-05-26");
+    else
+    	driver.findElement(By.id("CreatedDate")).sendKeys("26/05/2022");
+ 
     // 7 | click | css=.btn | 
     try {
         Thread.sleep(1000);
@@ -157,57 +184,37 @@ public class TestsEliminacionTest {
   public void zEliminacionDeTareaCasoBackToList() {
     // Test name: EliminacionDeTarea(CasoBackToList)
     // Step # | name | target | value
-	// 1 | open | http://coresqlfernandezcamacho.azurewebsites.net/ | 
+	  // 1 | open | http://coresqlfernandezcamacho.azurewebsites.net/ | 
 	    driver.get("http://coresqlfernandezcamacho.azurewebsites.net/");
-	    // 2 | setWindowSize | 890x666 | 
+	    // 2 | setWindowSize | 887x570 | 
 	    try {
 	        Thread.sleep(1000);
 	      } catch (InterruptedException e) {
 	        e.printStackTrace();
 	      }
-	    driver.manage().window().setSize(new Dimension(890, 666));
-	    // 3 | click | linkText=Create New | 
+	    driver.manage().window().setSize(new Dimension(887, 570));
+	    // 3 | click | //td[normalize-space(text()) = 'Tarea1']/following-sibling::*[2]/a[normalize-space(text()) = 'Delete'] | 
 	    try {
 	        Thread.sleep(1000);
 	      } catch (InterruptedException e) {
 	        e.printStackTrace();
 	      }
-	    driver.findElement(By.linkText("Create New")).click();
-	    // 4 | click | id=Description | 
+	    driver.findElement(By.xpath("//td[normalize-space(text()) = \'Tarea1\']/following-sibling::*[2]/a[normalize-space(text()) = \'Delete\']")).click();
+	    // 4 | click | linkText=Back to List | 
 	    try {
 	        Thread.sleep(1000);
 	      } catch (InterruptedException e) {
 	        e.printStackTrace();
 	      }
-	    driver.findElement(By.id("Description")).click();
-	    // 5 | type | id=Description | Tarea1
+	    driver.findElement(By.linkText("Back to List")).click();
+	    // 5 | assertText | //td[normalize-space(text()) = 'Tarea1'] | Tarea1
 	    try {
 	        Thread.sleep(1000);
 	      } catch (InterruptedException e) {
 	        e.printStackTrace();
 	      }
-	    driver.findElement(By.id("Description")).sendKeys("Tarea1");
-	    // 6 | click | id=CreatedDate | 
-	    try {
-	        Thread.sleep(1000);
-	      } catch (InterruptedException e) {
-	        e.printStackTrace();
-	      }
-	    driver.findElement(By.id("CreatedDate")).click();
-	    // 7 | type | id=CreatedDate | 2022-05-26
-	    try {
-	        Thread.sleep(1000);
-	      } catch (InterruptedException e) {
-	        e.printStackTrace();
-	      }
-	    driver.findElement(By.id("CreatedDate")).sendKeys("26/05/2022");
-	    // 8 | click | css=.btn | 
-	    try {
-	        Thread.sleep(1000);
-	      } catch (InterruptedException e) {
-	        e.printStackTrace();
-	      }
-	    driver.findElement(By.cssSelector(".btn")).click();
+	    assertThat(driver.findElement(By.xpath("//td[normalize-space(text()) = \'Tarea1\']")).getText(), is("Tarea1"));
+	  
   }
   
   @Test
@@ -233,7 +240,11 @@ public class TestsEliminacionTest {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-    driver.findElement(By.id("CreatedDate")).sendKeys("15/04/2022");
+    
+    if(browser == 0)
+    	driver.findElement(By.id("CreatedDate")).sendKeys("2022-04-15");
+    else
+    	driver.findElement(By.id("CreatedDate")).sendKeys("15/04/2022");
     // 7 | click | css=.btn | 
     try {
         Thread.sleep(1000);
